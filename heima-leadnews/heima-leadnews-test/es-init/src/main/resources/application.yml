@@ -1,0 +1,22 @@
+server:
+  port: 9999
+
+spring:
+  application:
+    name: es-article
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/leadnews_article?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: 123456
+
+mybatis-plus:
+  # 指定 Mapper 接口所对应的 XML 文件位置。这里定义 Mapper 接口时需要和对应 XML 配置文件路径保持一致。
+  mapper-locations: classpath*:mapper/*.xml
+  # 设置别名包扫描路径，通过该属性可以给包中的类注册别名，简化配置。
+  type-aliases-package: com.heima.model.article.pojos
+
+# 自定义 Elasticsearch 的主机和端口配置
+elasticsearch:
+  host: 192.168.200.128
+  port: 9200

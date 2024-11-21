@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?> <!-- 声明 XML 版本和字符编码 -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> <!-- 声明 MyBatis 的 DTD 文件 -->
+
+<mapper namespace="com.heima.es.mapper.ApArticleMapper"> <!-- 指定 Mapper 的命名空间 -->
+
+    <!-- 定义 ResultMap， 用于将查询结果映射到 Java 对象 -->
+    <resultMap id="resultMap" type="com.heima.es.pojo.SearchArticleVo"> <!-- id 为 resultMap 的名称，type 指定映射到的 Java 类型 -->
+        <!-- 映射数据库字段到 Java 类的属性 -->
+        <id column="id" property="id"/> <!-- 映射 id 字段到 id 属性 -->
+        <result column="title" property="title"/> <!-- 映射 title 字段到 title 属性 -->
+        <result column="author_id" property="authorId"/> <!-- 映射 author_id 字段到 authorId 属性 -->
+        <result column="author_name" property="authorName"/> <!-- 映射 author_name 字段到 authorName 属性 -->
+        <result column="layout" property="layout"/> <!-- 映射 layout 字段到 layout 属性 -->
+        <result column="images" property="images"/> <!-- 映射 images 字段到 images 属性 -->
+        <result column="publish_time" property="publishTime"/> <!-- 映射 publish_time 字段到 publishTime 属性 -->
+        <result column="static_url" property="staticUrl"/> <!-- 映射 static_url 字段到 staticUrl 属性 -->
+        <result column="content" property="content"/> <!-- 映射 content 字段到 content 属性 -->
+    </resultMap>
+
+    <!-- 定义查询方法，返回映射的结果 -->
+    <select id="loadArticleList" resultMap="resultMap"> <!-- id 为 SQL 查询方法名，resultMap 绑定前面定义的 resultMap -->
+        SELECT
+        aa.*,   <!-- 查询 ap_article 表中的所有列 -->
+        aacon.content   <!-- 查询 ap_article_content 表中的 content 字段 -->
+        FROM
+        ap_article aa,   <!-- ap_article 表，并取别名 aa -->
+        ap_article_config aac,   <!-- ap_article_config 表，并取别名 aac -->
+        ap_article_content aacon   <!-- ap_article_content 表，并取别名 aacon -->
+        WHERE
+        aa.id = aac.article_id   <!-- 连接 ap_article 表和 ap_article_config 表，匹配 id -->
+        AND aa.id = aacon.article_id   <!-- 连接 ap_article 表和 ap_article_content 表，匹配 id -->
+        AND aac.is_delete != 1   <!-- 只选择 is_delete 不等于 1 的记录，表示没有被删除 -->
+        AND aac.is_down != 1   <!-- 只选择 is_down 不等于 1 的记录，表示没有被下架 -->
+    </select>
+
+</mapper>
